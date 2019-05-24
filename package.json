@@ -1,0 +1,24 @@
+{
+  "name": "guess-mine",
+  "version": "1.0.0",
+  "description": "Realtime Drawing Game built with SocketIO, Gulp and Node and TypeScript",
+  "main": "index.js",
+  "repository": "git@github.com:geonwoo-jeong/guess-mine.git",
+  "author": "Geonwoo Jeong <geonwoo.jeong@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.0",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "nodemon": "^1.19.0",
+    "typescript": "^3.4.5"
+  },
+  "scripts": {
+    "start": "nodemon --exec babel-node src/server.ts"
+  }
+}

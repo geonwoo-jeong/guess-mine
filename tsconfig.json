@@ -7,6 +7,5 @@
     "esModuleInterop": true,
     "strict": true
   },
-  "include": ["src"],
-  "extends": ["tslint:latest", "tslint-config-prettier"]
+  "include": ["src"]
 }

@@ -1,11 +1,13 @@
-import { join } from "path";
 import express from "express";
+import morgan from "morgan";
+import { join } from "path";
 import socketIO from "socket.io";
 
 const PORT = 4000;
 const app = express();
 app.set("view engine", "pug");
 app.set("views", join(__dirname, "views"));
+app.use(morgan("dev"));
 app.use(express.static(join(__dirname, "statics")));
 app.get("/", (req, res) => res.render("home"));
 
@@ -14,4 +16,6 @@ const handleListening = () =>
 
 const server = app.listen(PORT, handleListening);
 
-const io = socketIO(server);
+const io = socketIO.listen(server);
+
+io.on("connection", () => console.log("hi"));

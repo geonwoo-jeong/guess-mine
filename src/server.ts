@@ -18,4 +18,12 @@ const server = app.listen(PORT, handleListening);
 
 const io = socketIO.listen(server);
 
-io.on("connection", () => console.log("hi"));
+io.on("connection", (socket: any) => {
+  socket.on("newMessage", ({ message }: any) => {
+    const { nickname = "Anonymous" } = socket;
+    socket.broadcast.emit("messageNotification", { message, nickname });
+  });
+  socket.on("setNickname", ({ nickname }: any) => {
+    socket.nickname = nickname;
+  });
+});

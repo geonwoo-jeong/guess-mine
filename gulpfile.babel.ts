@@ -1,4 +1,7 @@
+import { watchFile } from "fs";
 import gulp from "gulp";
+import autoprefixer from "gulp-autoprefixer";
+import minifyCSS from "gulp-csso";
 import pug from "gulp-pug";
 import sass from "gulp-sass";
 import typescript from "gulp-typescript";
@@ -11,7 +14,8 @@ const paths = {
   },
   styles: {
     dest: "dist/styles",
-    src: "src/statics/styles.scss"
+    src: "src/statics/styles.scss",
+    watch: "src/statics/**/*.scss"
   },
   htmls: {
     dest: "dist/",
@@ -19,14 +23,14 @@ const paths = {
   }
 };
 
-export function htmls() {
+function htmls() {
   return gulp
     .src(paths.htmls.src)
     .pipe(pug())
     .pipe(gulp.dest(paths.htmls.dest));
 }
 
-export function scripts() {
+function scripts() {
   return gulp
     .src(paths.scripts.src)
     .pipe(
@@ -37,9 +41,24 @@ export function scripts() {
     .pipe(gulp.dest(paths.scripts.dest));
 }
 
-export function styles() {
+function styles() {
   return gulp
     .src(paths.styles.src)
     .pipe(sass())
+    .pipe(
+      autoprefixer({
+        browsers: ["last 2 versions"],
+        cascade: false
+      })
+    )
+    .pipe(minifyCSS())
     .pipe(gulp.dest(paths.styles.dest));
 }
+
+function watchFiles() {
+  gulp.watch(paths.styles.src, styles);
+}
+
+const dev = gulp.series([styles, watchFiles]);
+
+export default dev;

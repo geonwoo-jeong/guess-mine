@@ -1,4 +1,4 @@
-import { watchFile } from "fs";
+import del from "del";
 import gulp from "gulp";
 import autoprefixer from "gulp-autoprefixer";
 import minifyCSS from "gulp-csso";
@@ -23,15 +23,16 @@ const paths = {
   }
 };
 
-function htmls() {
-  return gulp
+const clean = () => del("src/static");
+
+const htmls = () =>
+  gulp
     .src(paths.htmls.src)
     .pipe(pug())
     .pipe(gulp.dest(paths.htmls.dest));
-}
 
-function scripts() {
-  return gulp
+const scripts = () =>
+  gulp
     .src(paths.scripts.src)
     .pipe(
       typescript({
@@ -39,10 +40,9 @@ function scripts() {
       })
     )
     .pipe(gulp.dest(paths.scripts.dest));
-}
 
-function styles() {
-  return gulp
+const styles = () =>
+  gulp
     .src(paths.styles.src)
     .pipe(sass())
     .pipe(
@@ -53,12 +53,9 @@ function styles() {
     )
     .pipe(minifyCSS())
     .pipe(gulp.dest(paths.styles.dest));
-}
 
-function watchFiles() {
-  gulp.watch(paths.styles.src, styles);
-}
+const watchFiles = () => gulp.watch(paths.styles.src, styles);
 
-const dev = gulp.series([styles, watchFiles]);
+const dev = gulp.series(clean, styles, watchFiles);
 
 export default dev;
